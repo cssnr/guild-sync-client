@@ -6,7 +6,8 @@ import urllib3
 
 urllib3.disable_warnings()
 
-GUILD_SYNC_URL = 'http://192.168.1.51:8000/client'
+#GUILD_SYNC_URL = 'http://192.168.1.51:8000/client'
+GUILD_SYNC_URL = 'https://192.168.1.51/client'
 GUILD_SYNC_DB = {}
 headers = dict
 
@@ -27,7 +28,7 @@ def auth():
 
     global headers
     headers = {'Access-Key': access_key}
-    r = requests.post(GUILD_SYNC_URL + '/auth/', headers=headers)
+    r = requests.post(GUILD_SYNC_URL + '/auth/', headers=headers, verify=False)
     if not r.ok:
         print('Login Error: ')
         r.raise_for_status()
@@ -55,7 +56,8 @@ def main():
         GUILD_SYNC_DB.update(data)
         r = requests.post(GUILD_SYNC_URL + '/upload/',
                           json=GUILD_SYNC_DB,
-                          headers=headers)
+                          headers=headers,
+                          verify=False)
         if not r.ok:
             print('Error sending data to server...')
             print(r.status_code)
