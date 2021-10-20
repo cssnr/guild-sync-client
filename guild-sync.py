@@ -1,13 +1,15 @@
-from slpp import slpp
 import os
 import requests
 import time
 import urllib3
+import tkinter as tk
+from slpp import slpp
+from tkinter import filedialog
 
 urllib3.disable_warnings()
 headers = dict
-GUILD_SYNC_URL = 'https://dev.guildsync.cc/client'
 GUILD_SYNC_DB = {}
+GUILD_SYNC_URL = 'https://dev.guildsync.cc/client'
 
 
 def auth():
@@ -38,7 +40,24 @@ def auth():
 
 
 def main():
-    lua_file = r'C:\Program Files (x86)\World of Warcraft\_classic_\WTF\Account\SMASHED926\SavedVariables\GuildSync.lua'
+    print('Please select your WTF Account folder.')
+    print('Example for username "Test123":')
+    print(r'C:\Program Files (x86)\World of Warcraft\_classic_\WTF\Account\Test123')
+    root = tk.Tk()
+    root.withdraw()
+    wow_dir = ''
+    while not os.path.isdir(os.path.join(wow_dir, 'SavedVariables')):
+        print('This directory seems invalid, try again...')
+        wow_dir = filedialog.askdirectory(initialdir=r'C:\Program Files (x86)\World of Warcraft\_classic_\WTF\Account')
+    lua_file = os.path.join(wow_dir, r'SavedVariables\GuildSync.lua')
+    while not os.path.isfile(lua_file):
+        print(f'Database file does not exist yet: {lua_file}')
+        print(f'You must run the in-game addon, wait 30 seconds for a sync, and logout of the game.')
+        print('Will check again in 30 seconds...')
+        time.sleep(30)
+
+    print(f'Using .lua file: {lua_file}')
+    time.sleep(500)
     f = open(lua_file, 'r', encoding='utf-8')
     s = f.read()
 
@@ -76,6 +95,6 @@ if __name__ == '__main__':
             print('Caught exit signal. Shutting down...')
             raise
         except Exception as error:
-            print('Caught Exception: {}'.format(error))
+            print(f'Caught Exception: {error}')
             time.sleep(5)
             continue
