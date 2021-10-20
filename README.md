@@ -6,7 +6,8 @@ Python Client for Guild Sync.
 
 ### Download
 
-Download Latest: [GuildSync.exe](https://github.com/cssnr/guild-sync-client/releases/latest/download/GuildSync.exe)
+- Latest for Windows: [GuildSync.exe](https://github.com/cssnr/guild-sync-client/releases/latest/download/GuildSync.exe)
+- Latest for macOS: `Coming Soon`  
 
 Or head over to the [Releases page](https://github.com/cssnr/guild-sync-client/releases).
 

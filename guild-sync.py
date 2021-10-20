@@ -57,10 +57,8 @@ def main():
         time.sleep(30)
 
     print(f'Using .lua file: {lua_file}')
-    time.sleep(500)
     f = open(lua_file, 'r', encoding='utf-8')
     s = f.read()
-
     extra = s.split('{')[0]
     out = s.replace(extra, "")
     # extra = out.split('GuildDiscordSyncTime')[1]
