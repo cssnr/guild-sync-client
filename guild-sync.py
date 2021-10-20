@@ -5,11 +5,9 @@ import time
 import urllib3
 
 urllib3.disable_warnings()
-
-#GUILD_SYNC_URL = 'http://192.168.1.51:8000/client'
-GUILD_SYNC_URL = 'https://192.168.1.51/client'
-GUILD_SYNC_DB = {}
 headers = dict
+GUILD_SYNC_URL = 'https://dev.guildsync.cc/client'
+GUILD_SYNC_DB = {}
 
 
 def auth():
@@ -65,7 +63,7 @@ def main():
         if r.content.decode('utf-8') == 'auth-fail':
             print('Auth Failure!')
             raise Exception('AuthFailure')
-        print('Sync complete.')
+        print('Sync complete, sleeping until new cahnges detected...')
 
 
 if __name__ == '__main__':
