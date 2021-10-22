@@ -11,8 +11,7 @@ urllib3.disable_warnings()
 headers = dict
 settings = dict
 GUILD_SYNC_DB = {}
-GUILD_SYNC_URL = 'https://dev.guildsync.cc/client'
-# GUILD_SYNC_URL = 'https://dev01.cssnr.com/client'
+GUILD_SYNC_URL = 'https://guildsync.cc/client'
 
 
 def auth():
