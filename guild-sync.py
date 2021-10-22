@@ -5,7 +5,7 @@ import time
 import urllib3
 import tkinter as tk
 from slpp import slpp
-from tkinter import filedialog
+from tkinter import filedialog, simpledialog
 
 urllib3.disable_warnings()
 headers = dict
@@ -60,7 +60,11 @@ def load_settings():
     if not settings['access_key']:
         access_key = None
         while access_key is None:
-            access_key = input('\nAccess Key: ').strip()
+            # access_key = input('\nAccess Key: ').strip()
+            root = tk.Tk()
+            root.withdraw()
+            access_key = simpledialog.askstring(title="Access Key",
+                                              prompt="Access Key from Website:")
         settings['access_key'] = access_key
         with open(settings_file, 'w', encoding='utf-8') as f:
             f.write(json.dumps(settings))
@@ -82,7 +86,7 @@ def main():
     # extra = 'GuildDiscordSyncTime' + extra
     # out = out.replace(toRemove, "")
     data = slpp.decode(out)
-    print(data)
+    # print(data)
     if GUILD_SYNC_DB != data:
         print('Changes detected, syncing database now...')
         GUILD_SYNC_DB.clear()
