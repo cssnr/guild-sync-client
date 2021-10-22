@@ -13,11 +13,12 @@ Or head over to the [Releases page](https://github.com/cssnr/guild-sync-client/r
 
 ### Running
 
-1. Unzip and run `GuildSync.exe`
-1. Copy your `Access Token` from your Profile on the website.
-1. Paste it in when requested.
-1. Select your WTF/Account/AccountName folder.
+1. Download and run: `GuildSync.exe`
+1. Copy your `Access Token` from your Profile on the website (top right-hand corner).
+1. Select your WoW WTF Account Folder (just the account name).
+   * Example: `C:\Program Files (x86)\World of Warcraft\_classic_\WTF\Account\Test123`
 1. Make sure you have run, or do run the in-game addon.
+   * [Guild Sync Addon](https://github.com/cssnr/guild-sync-addon)
 
 ### Building
 

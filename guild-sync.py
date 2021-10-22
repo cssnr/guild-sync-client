@@ -1,3 +1,4 @@
+import json
 import os
 import requests
 import time
@@ -8,26 +9,16 @@ from tkinter import filedialog
 
 urllib3.disable_warnings()
 headers = dict
+settings = dict
 GUILD_SYNC_DB = {}
-GUILD_SYNC_URL = 'https://dev.guildsync.cc/client'
+# GUILD_SYNC_URL = 'https://dev.guildsync.cc/client'
+GUILD_SYNC_URL = 'https://dev01.cssnr.com/client'
 
 
 def auth():
     print('Authenticating...')
-    data_folder = os.path.join(os.environ['APPDATA'], 'GuildSync')
-    if not os.path.exists(data_folder):
-        os.makedirs(data_folder)
-    data_file = os.path.join(data_folder, 'access-key')
-    if not os.path.exists(data_file):
-        access_key = input('\nAccess Key: ').strip()
-        with open(data_file, 'w', encoding='utf-8') as f:
-            f.write(access_key)
-    else:
-        with open(data_file, 'r', encoding='utf-8') as f:
-            access_key = f.read().strip()
-
     global headers
-    headers = {'Access-Key': access_key}
+    headers = {'Access-Key': settings['access_key']}
     r = requests.post(GUILD_SYNC_URL + '/auth/', headers=headers, verify=False)
     if not r.ok:
         print('Login Error: ')
@@ -39,25 +30,51 @@ def auth():
         print(r.content.decode('utf-8'))
 
 
-def main():
-    print('Please select your WTF Account folder.')
-    print('Example for username "Test123":')
-    print(r'C:\Program Files (x86)\World of Warcraft\_classic_\WTF\Account\Test123')
-    root = tk.Tk()
-    root.withdraw()
-    wow_dir = ''
-    while not os.path.isdir(os.path.join(wow_dir, 'SavedVariables')):
-        print('This directory seems invalid, try again...')
-        wow_dir = filedialog.askdirectory(initialdir=r'C:\Program Files (x86)\World of Warcraft\_classic_\WTF\Account')
-    lua_file = os.path.join(wow_dir, r'SavedVariables\GuildSync.lua')
-    while not os.path.isfile(lua_file):
+def load_settings():
+    global settings
+    settings = {'access_key': '', 'lua_file': ''}
+    data_folder = os.path.join(os.environ['APPDATA'], 'GuildSync')
+    if not os.path.exists(data_folder):
+        os.makedirs(data_folder)
+    settings_file = os.path.join(data_folder, 'settings.json')
+    if not os.path.exists(settings_file):
+        with open(settings_file, 'w', encoding='utf-8') as f:
+            f.write(json.dumps(settings))
+    else:
+        with open(settings_file, 'r', encoding='utf-8') as f:
+            settings = json.loads(f.read().strip())
+
+    if not settings['lua_file']:
+        print('Please select your WTF Account Username folder.')
+        print('Example for username: Test123')
+        print(r'C:\Program Files (x86)\World of Warcraft\_classic_\WTF\Account\Test123')
+        root = tk.Tk()
+        root.withdraw()
+        wow_dir = ''
+        while not os.path.isdir(os.path.join(wow_dir, 'SavedVariables')):
+            print('This directory seems invalid, try again...')
+            wow_dir = filedialog.askdirectory(initialdir=r'C:\Program Files (x86)\World of Warcraft\_classic_\WTF\Account')
+        lua_file = os.path.join(wow_dir, r'SavedVariables\GuildSync.lua')
+        settings['lua_file'] = lua_file
+
+    if not settings['access_key']:
+        access_key = None
+        while access_key is None:
+            access_key = input('\nAccess Key: ').strip()
+        settings['access_key'] = access_key
+        with open(settings_file, 'w', encoding='utf-8') as f:
+            f.write(json.dumps(settings))
+
+    while not os.path.isfile(settings['lua_file']):
         print(f'Database file does not exist yet: {lua_file}')
         print(f'You must run the in-game addon, wait 30 seconds for a sync, and logout of the game.')
         print('Will check again in 30 seconds...')
         time.sleep(30)
 
-    print(f'Using .lua file: {lua_file}')
-    f = open(lua_file, 'r', encoding='utf-8')
+
+def main():
+    print(f"Using .lua file: {settings['lua_file']}")
+    f = open(settings['lua_file'], 'r', encoding='utf-8')
     s = f.read()
     extra = s.split('{')[0]
     out = s.replace(extra, "")
@@ -65,6 +82,7 @@ def main():
     # extra = 'GuildDiscordSyncTime' + extra
     # out = out.replace(toRemove, "")
     data = slpp.decode(out)
+    print(data)
     if GUILD_SYNC_DB != data:
         print('Changes detected, syncing database now...')
         GUILD_SYNC_DB.clear()
@@ -84,6 +102,7 @@ def main():
 
 
 if __name__ == '__main__':
+    load_settings()
     auth()
     while True:
         try:
