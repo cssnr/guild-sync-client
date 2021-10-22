@@ -11,8 +11,8 @@ urllib3.disable_warnings()
 headers = dict
 settings = dict
 GUILD_SYNC_DB = {}
-# GUILD_SYNC_URL = 'https://dev.guildsync.cc/client'
-GUILD_SYNC_URL = 'https://dev01.cssnr.com/client'
+GUILD_SYNC_URL = 'https://dev.guildsync.cc/client'
+# GUILD_SYNC_URL = 'https://dev01.cssnr.com/client'
 
 
 def auth():
@@ -60,12 +60,11 @@ def load_settings():
     if not settings['access_key']:
         access_key = None
         while access_key is None:
-            # access_key = input('\nAccess Key: ').strip()
             root = tk.Tk()
             root.withdraw()
             access_key = simpledialog.askstring(title="Access Key",
-                                              prompt="Access Key from Website:")
-        settings['access_key'] = access_key
+                                                prompt="Access Key from Website:")
+        settings['access_key'] = access_key.strip()
         with open(settings_file, 'w', encoding='utf-8') as f:
             f.write(json.dumps(settings))
 
