@@ -77,7 +77,6 @@ def load_settings():
 
 
 def main():
-    print(f"Using .lua file: {settings['lua_file']}")
     f = open(settings['lua_file'], 'r', encoding='utf-8')
     s = f.read()
     extra = s.split('{')[0]
@@ -108,6 +107,7 @@ def main():
 if __name__ == '__main__':
     load_settings()
     auth()
+    print(f"Using .lua file: {settings['lua_file']}")
     while True:
         try:
             main()
