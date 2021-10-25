@@ -77,7 +77,7 @@ def load_settings():
             f.write(json.dumps(settings))
 
     while not os.path.isfile(settings['lua_file']):
-        print(f'Database file does not exist yet: {lua_file}')
+        print(f"Database file does not exist yet: {settings['lua_file']}")
         print(f'You must run the in-game addon, wait 30 seconds for a sync, and logout of the game.')
         print('Will check again in 30 seconds...')
         time.sleep(30)
