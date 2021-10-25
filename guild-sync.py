@@ -62,7 +62,7 @@ def load_settings():
         while not os.path.isdir(os.path.join(wow_dir, 'SavedVariables')):
             print('This directory seems invalid, try again...')
             wow_dir = filedialog.askdirectory(initialdir=start_dir)
-        lua_file = os.path.join(wow_dir, r'SavedVariables\GuildSync.lua')
+        lua_file = os.path.join(wow_dir, r'SavedVariables', 'GuildSync.lua')
         settings['lua_file'] = lua_file
 
     if not settings['access_key']:
