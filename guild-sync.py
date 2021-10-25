@@ -3,6 +3,7 @@ import os
 import requests
 import time
 import urllib3
+import sys
 import tkinter as tk
 from slpp import slpp
 from tkinter import filedialog, simpledialog
@@ -32,7 +33,13 @@ def auth():
 def load_settings():
     global settings
     settings = {'access_key': '', 'lua_file': ''}
-    data_folder = os.path.join(os.environ['APPDATA'], 'GuildSync')
+    if sys.platform == 'darwin':
+        data_folder = os.path.join(os.environ['HOME'], 'Library/Application Support/GuildSync')
+        start_dir = '/Applications/World of Warcraft'
+    else:
+        data_folder = os.path.join(os.environ['APPDATA'], 'GuildSync')
+        start_dir = r'C:\Program Files (x86)\World of Warcraft\_classic_\WTF\Account'
+
     if not os.path.exists(data_folder):
         os.makedirs(data_folder)
     settings_file = os.path.join(data_folder, 'settings.json')
@@ -46,13 +53,15 @@ def load_settings():
     if not settings['lua_file']:
         print('Please select your WTF Account Username folder.')
         print('Example for username: Test123')
+        print(r'C:\User\Public\Games\World of Warcraft\_classic_\WTF\Account\Test123')
         print(r'C:\Program Files (x86)\World of Warcraft\_classic_\WTF\Account\Test123')
+        print(r'/Applications/World of Warcraft/_classic_/WTF/Account/Test123')
         root = tk.Tk()
         root.withdraw()
         wow_dir = ''
         while not os.path.isdir(os.path.join(wow_dir, 'SavedVariables')):
             print('This directory seems invalid, try again...')
-            wow_dir = filedialog.askdirectory(initialdir=r'C:\Program Files (x86)\World of Warcraft\_classic_\WTF\Account')
+            wow_dir = filedialog.askdirectory(initialdir=start_dir)
         lua_file = os.path.join(wow_dir, r'SavedVariables\GuildSync.lua')
         settings['lua_file'] = lua_file
 
@@ -61,8 +70,8 @@ def load_settings():
         while access_key is None:
             root = tk.Tk()
             root.withdraw()
-            access_key = simpledialog.askstring(title="Access Key",
-                                                prompt="Access Key from Website:")
+            access_key = simpledialog.askstring(title='Access Key',
+                                                prompt='Access Key from Website:')
         settings['access_key'] = access_key.strip()
         with open(settings_file, 'w', encoding='utf-8') as f:
             f.write(json.dumps(settings))
@@ -78,10 +87,10 @@ def main():
     f = open(settings['lua_file'], 'r', encoding='utf-8')
     s = f.read()
     extra = s.split('{')[0]
-    out = s.replace(extra, "")
+    out = s.replace(extra, '')
     # extra = out.split('GuildDiscordSyncTime')[1]
     # extra = 'GuildDiscordSyncTime' + extra
-    # out = out.replace(toRemove, "")
+    # out = out.replace(toRemove, '')
     data = slpp.decode(out)
     # print(data)
     if GUILD_SYNC_DB != data:
