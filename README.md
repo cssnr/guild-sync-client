@@ -7,7 +7,7 @@ Client Application for Guild Sync.
 ### Download
 
 - Latest for Windows: [GuildSync.exe](https://github.com/cssnr/guild-sync-client/releases/latest/download/GuildSync.exe)
-- Latest for macOS: `Coming Soon`  
+- Latest for MacOS: [GuildSync](https://github.com/cssnr/guild-sync-client/releases/latest/download/GuildSync)
 
 Or head over to the [Releases page](https://github.com/cssnr/guild-sync-client/releases).
 
